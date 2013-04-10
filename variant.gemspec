@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Variant::VERSION
   spec.authors       = ["Alexander K"]
   spec.email         = ["xpyro@ya.ru"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{ alternative to case/when using classes }.strip
+  spec.summary       = %q{ alternative to case/when using classes }.strip
+  spec.homepage      = "TODO: github"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
