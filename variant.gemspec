@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Variant::VERSION
   spec.authors       = ["Alexander K"]
   spec.email         = ["xpyro@ya.ru"]
-  spec.description   = %q{ alternative to case/when using classes }.strip
-  spec.summary       = %q{ alternative to case/when using classes }.strip
+  spec.description   = %q{ case/when using classes }.strip
+  spec.summary       = %q{ case/when using classes }.strip
   spec.homepage      = "TODO: github"
   spec.license       = "MIT"
 
