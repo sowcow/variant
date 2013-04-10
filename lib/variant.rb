@@ -27,7 +27,14 @@ module Variant
 
     def self.return! object
       @returns ? object.instance_eval(&@returns) : self
-    end    
+    end
+
+    def self.abstract!
+      @abstract = true
+    end
+    def self.abstract?
+      @abstract
+    end
   end
   
   def self.included target
@@ -40,7 +47,10 @@ module Variant
     end
 
     def variants
-      constants.map { |x| const_get x }.select { |x| x.is_a? Class }.select { |x| x < Variant }
+      constants.map { |x| const_get x }.
+                select { |x| x.is_a? Class }.
+                select { |x| x < Variant }.
+                reject { |x| x.abstract? }
     end
   end
 end

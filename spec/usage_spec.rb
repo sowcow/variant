@@ -51,6 +51,12 @@ describe Variant do
   example :with_returns do
     module My
       include Variant
+
+      class Variant < Variant # :)
+        abstract!
+        def initialize data; @data = data end
+        attr_reader :data
+      end
       
       class Num < Variant
         accept /^\d+$/
@@ -58,8 +64,6 @@ describe Variant do
       end
 
       class Wrap < Variant
-        def initialize data; @data = data end
-        attr_reader :data
         accept Range
         returns { Wrap.new self }
       end      
@@ -68,6 +72,11 @@ describe Variant do
         accept :all
         returns { nil }
       end
+
+      class Never < Variant
+        accept :all
+        returns { raise }
+      end      
     end  
 
     My.choose('123').should == 123
@@ -77,6 +86,6 @@ describe Variant do
 
 end
 
-# abstract?
 # value?
 # accept a,b,c?
+# priorities?
