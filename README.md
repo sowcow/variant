@@ -1,6 +1,28 @@
 # Variant
 
-TODO: Write a gem description
+basic example from specs:
+```ruby
+module My
+  include Variant
+  
+  class One < Variant
+    accept { self == 1 }
+  end
+
+  class Many < Variant
+    accept { |x| x > 1 }
+  end
+
+  class Other < Variant
+    accept { true }
+  end
+end
+
+My.variants.should have(3).classes
+My.choose(1).should == My::One
+My.choose(2).should == My::Many
+My.choose(-3).should == My::Other
+```
 
 ## Installation
 
