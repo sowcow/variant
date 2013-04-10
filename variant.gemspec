@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["xpyro@ya.ru"]
   spec.description   = %q{ case/when using classes }.strip
   spec.summary       = %q{ case/when using classes }.strip
-  spec.homepage      = "TODO: github"
+  spec.homepage      = "https://github.com/sowcow/variant"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
