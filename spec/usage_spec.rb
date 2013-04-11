@@ -190,6 +190,19 @@ describe Variant do
     My.choose('?').should == nil
   end
 
+  specify '#returns does not conflict with wrap' do
+    module My
+      include Variant::Wrap
+
+      class One < Variant
+        accept :all
+        returns nil
+      end
+    end
+
+    My.choose(1).should == nil
+  end
+
 end
 
 # value?

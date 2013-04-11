@@ -9,7 +9,7 @@ module Variant
       attr_reader :object
 
       def self.return! object
-        @returns ? super : new(object)
+        @returns_is_set ? super : new(object)
       end
     end
   end

@@ -30,7 +30,7 @@ module Variant
 
     def self.returns param=NONE, &block
       if    given?(param) && !block; @returns = param; @returns_is_set = true
-      elsif block && !given?(param);  @returns = block; @returns_is_set = true
+      elsif block && !given?(param); @returns = block; @returns_is_set = true
       else
         raise 'shit! i take only param or only block at once!'
       end
