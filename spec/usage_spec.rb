@@ -84,6 +84,37 @@ describe Variant do
     My.choose(:abra).should == nil
   end
 
+  example :with_wrapping do
+    module My
+      include Variant::Wrap
+      
+      class Num < Variant
+        accept /^\d+$/
+        
+        def data
+          object.to_i
+        end
+      end
+
+      class Range < Variant
+        accept /^\d+\.\.\d+$/
+
+        def data
+          ::Range.new *object.scan(/\d+/).map(&:to_i)
+        end
+      end      
+
+      class Other < Variant
+        accept :all
+        returns { raise }
+      end
+    end   
+
+    My.choose('123').data.should == 123
+    My.choose('0..5').data.should == (0..5)
+    expect { My.choose(:abra) }.to raise_error
+  end
+
 end
 
 # value?
