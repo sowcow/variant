@@ -143,40 +143,52 @@ describe Variant do
     My.new([1,'2',:bla,:bla,:bla]).format.should == [{numeric: 1}, {string: '2'}]
   end
 
-  # example 'with use of: any, all' do
-  #   module My
-  #     include Variant
+  example 'with use of: any, all' do
+    module My
+      include Variant
 
-  #     class Collection
-  #       accept any(Array, Set)
-  #       returns ','
-  #     end
-  #     class Pattern
-  #       accept any(Regexp, Range)
-  #       returns '~'
-  #     end
-  #     class Positive
-  #       accept any(
-  #                all(String, proc { match /(good|nice)/ }),
-  #                all(Integer, proc { self > 0 })
-  #              )
-  #       returns '+'
-  #     end
-  #     class Negative
-  #       accept any(
-  #                all(String, proc { match /crap/ }),
-  #                all(Integer, proc { self < 0 })
-  #              )
-  #       returns '-'
-  #     end      
-  #     class Other
-  #       accept :all
-  #       returns nil
-  #     end
-  #   end
+      class Collection < Variant
+        accept any(Array, Set)
+        returns ','
+      end
+      class Pattern < Variant
+        accept any(Regexp, Range)
+        returns '~'
+      end
+      class Positive < Variant
+        accept any(
+                 all(String, proc { match /nice/ }),
+                 all(Integer, proc { self > 0 })
+               )
+        returns '+'
+      end
+      class Negative < Variant
+        accept any(
+                 all(String, proc { match /smell/ }),
+                 all(Integer, proc { self < 0 })
+               )
+        returns '-'
+      end      
+      class Other < Variant
+        accept :all
+        returns nil
+      end
+    end
 
-  #   My.choose("it\'s nice to meet you").should == '+'
-  # end
+    My.choose([1,2]).should == ','
+    My.choose(Set[]).should == ','
+
+    My.choose(//).should == '~'
+    My.choose(1..2).should == '~'    
+
+    My.choose("it's nice to meet you").should == '+'
+    My.choose(1).should == '+'
+
+    My.choose("is this code smells?").should == '-'
+    My.choose(-1).should == '-'
+
+    My.choose('?').should == nil
+  end
 
 end
 
@@ -185,3 +197,4 @@ end
 # priorities?
 # extra agility by include/extend , not subclassing?
 # choose one, if more - raise ?
+# do we realy need instance_eval?

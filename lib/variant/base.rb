@@ -1,16 +1,23 @@
 module Variant
   extend Choosable
 
+  # all methods are classmethods...
+  # is it cool?
   class Variant
+    extend Matchers
     ALL = proc { true }
-    NIL = Object.new
+    NONE = Object.new # sort of nil
 
-    def self.accept param=nil, &block
-      if    param && !block; param == :all ? accept(&ALL) : accept { param === self }
-      elsif block && !param; (@accepts ||= []) << block
-      else
-        raise 'shit! i take only param or only block at once!'
-      end
+    def self.accept param=NONE, &block
+      raise 'shit! i take only param or only block at once!' if (given? param) == (!!block)
+
+      (@accepts ||= []) <<  case
+                            when block then block
+                            when param == :all then ALL
+                            when param then param
+                            else
+                              raise 'impossible!'
+                            end
     end
 
     def self.accepts(*a,&b)
@@ -18,20 +25,18 @@ module Variant
     end
 
     def self.accept_this? object
-      @accepts.all? { |check| object.instance_eval &check }
+      @accepts.all? { |criteria| match? object, criteria }
     end
 
-    def self.returns param=NIL, &block
-      if    (param != NIL) && !block; @returns = param; @returns_is_set = true
-      elsif block && (param == NIL);  @returns = block; @returns_is_set = true
+    def self.returns param=NONE, &block
+      if    given?(param) && !block; @returns = param; @returns_is_set = true
+      elsif block && !given?(param);  @returns = block; @returns_is_set = true
       else
         raise 'shit! i take only param or only block at once!'
       end
     end
 
     def self.return! object
-      # @returns ? object.instance_eval(&@returns) : self
-      # @returns.call(object)
       @returns_is_set ? try_to_call(@returns, object) : self
     end
 
@@ -45,6 +50,9 @@ module Variant
     private
     def self.try_to_call any, *a
       any.respond_to?(:call) ? any.call(*a) : any
+    end
+    def self.given? given
+      not given == NONE
     end    
   end
 end
