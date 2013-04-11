@@ -119,3 +119,4 @@ end
 # value?
 # accept a,b,c?
 # priorities?
+# extra agility by include/extend , not subclassing?
