@@ -1,6 +1,8 @@
 # Variant
 
-basic example from specs:
+it can be useful if you think that case/when smells or not powerful enough
+
+example from specs:
 ```ruby
 class My < Struct.new :objects
   def format
@@ -10,17 +12,17 @@ class My < Struct.new :objects
   include Variant
 
   class Num < Variant
-    accept Numeric # also takes block
+    accepts Numeric # takes block or uses === matching
     returns { |x| {numeric: x} }
   end
 
   class Str < Variant
-    accept String
+    accepts String
     returns { |x| {string: x} }
   end
 
   class Other < Variant
-    accept :all
+    accepts :all
     returns { |x| raise "unknown object given: #{x.inspect}" }
   end       
 end
