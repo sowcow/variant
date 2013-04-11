@@ -24,7 +24,6 @@ describe Variant do
     My.choose(-3).should == My::Other
   end
 
-
   example :using_params do
     module My
       include Variant
