@@ -1,5 +1,5 @@
 module Variant
-  extend IsChoosable
+  extend Choosable
 
   class Variant
     ALL = proc { true }

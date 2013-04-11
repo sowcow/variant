@@ -1,6 +1,6 @@
 module Variant
   module Wrap
-    extend IsChoosable
+    extend Choosable
 
     class Variant < Variant
       def initialize object

@@ -114,6 +114,34 @@ describe Variant do
     expect { My.choose(:abra) }.to raise_error
   end
 
+  example :with_class do
+    
+    class My < Struct.new :objects
+      def format
+        objects.map { |x| choose x }
+      end
+
+      include Variant
+
+      class Num < Variant
+        accept Numeric
+        returns { |x| {numeric: x} }
+      end
+
+      class Str < Variant
+        accept String
+        returns { |x| {string: x} }
+      end
+
+      class Other < Variant
+        accept :all
+        returns { |x| raise "unknown object given: #{x.inspect}" }
+      end       
+    end
+
+    My.new([1, '2', 3, '4']).format.should == [{numeric: 1}, {string: '2'}, {numeric: 3}, {string: '4'}]
+  end
+
 end
 
 # value?

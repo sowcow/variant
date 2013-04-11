@@ -2,26 +2,30 @@
 
 basic example from specs:
 ```ruby
-module My
-  include Variant
-  
-  class One < Variant
-    accept { self == 1 }
+class My < Struct.new :objects
+  def format
+    objects.map { |x| choose x }
   end
 
-  class Many < Variant
-    accept { |x| x > 1 }
+  include Variant
+
+  class Num < Variant
+    accept Numeric # also takes block
+    returns { |x| {numeric: x} }
+  end
+
+  class Str < Variant
+    accept String
+    returns { |x| {string: x} }
   end
 
   class Other < Variant
-    accept { true }
-  end
+    accept :all
+    returns { |x| raise "unknown object given: #{x.inspect}" }
+  end       
 end
 
-My.variants.should have(3).classes
-My.choose(1).should == My::One
-My.choose(2).should == My::Many
-My.choose(-3).should == My::Other
+My.new([1, '2', 3, '4']).format.should == [{numeric: 1}, {string: '2'}, {numeric: 3}, {string: '4'}]
 ```
 
 ## Installation
