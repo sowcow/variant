@@ -3,7 +3,7 @@ module Variant
   # extending by this module modifies target.included, so
   # when that module is included we can do stuff, so
   # this module is for including in other modules, that will be included elsewhere...
-  # not sure is it cool practice, but it works
+  # (i need to play more with this trick)
   module Choosable
     def included target
       super
