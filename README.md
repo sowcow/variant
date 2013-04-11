@@ -1,33 +1,34 @@
 # Variant
 
-it can be useful if you think that case/when smells or not powerful enough
+it can be useful if you think that case/when smells or is'nt powerful enough
 
 example from specs:
 ```ruby
 class My < Struct.new :objects
   def format
-    objects.map { |x| choose x }
+    objects.map { |x| choose x }.compact
   end
 
   include Variant
 
   class Num < Variant
-    accepts Numeric # takes block or uses === matching
+    accept Numeric
     returns { |x| {numeric: x} }
   end
 
   class Str < Variant
-    accepts String
+    accept String
     returns { |x| {string: x} }
   end
 
   class Other < Variant
-    accepts :all
-    returns { |x| raise "unknown object given: #{x.inspect}" }
+    accept :all
+    returns nil
+    # returns { |x| raise "... #{x.inspect}" }
   end       
 end
 
-My.new([1, '2', 3, '4']).format.should == [{numeric: 1}, {string: '2'}, {numeric: 3}, {string: '4'}]
+My.new([1,'2',:bla,:bla,:bla]).format.should == [{numeric: 1}, {string: '2'}]
 ```
 
 ## Installation

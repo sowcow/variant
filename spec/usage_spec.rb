@@ -69,7 +69,7 @@ describe Variant do
 
       class Other < Variant
         accept :all
-        returns { nil }
+        returns nil
       end
 
       class Never < Variant
@@ -118,7 +118,7 @@ describe Variant do
     
     class My < Struct.new :objects
       def format
-        objects.map { |x| choose x }
+        objects.map { |x| choose x }.compact
       end
 
       include Variant
@@ -135,12 +135,48 @@ describe Variant do
 
       class Other < Variant
         accept :all
-        returns { |x| raise "unknown object given: #{x.inspect}" }
+        returns nil
+        # returns { |x| raise "... #{x.inspect}" }
       end       
     end
 
-    My.new([1, '2', 3, '4']).format.should == [{numeric: 1}, {string: '2'}, {numeric: 3}, {string: '4'}]
+    My.new([1,'2',:bla,:bla,:bla]).format.should == [{numeric: 1}, {string: '2'}]
   end
+
+  # example 'with use of: any, all' do
+  #   module My
+  #     include Variant
+
+  #     class Collection
+  #       accept any(Array, Set)
+  #       returns ','
+  #     end
+  #     class Pattern
+  #       accept any(Regexp, Range)
+  #       returns '~'
+  #     end
+  #     class Positive
+  #       accept any(
+  #                all(String, proc { match /(good|nice)/ }),
+  #                all(Integer, proc { self > 0 })
+  #              )
+  #       returns '+'
+  #     end
+  #     class Negative
+  #       accept any(
+  #                all(String, proc { match /crap/ }),
+  #                all(Integer, proc { self < 0 })
+  #              )
+  #       returns '-'
+  #     end      
+  #     class Other
+  #       accept :all
+  #       returns nil
+  #     end
+  #   end
+
+  #   My.choose("it\'s nice to meet you").should == '+'
+  # end
 
 end
 
@@ -148,3 +184,4 @@ end
 # accept a,b,c?
 # priorities?
 # extra agility by include/extend , not subclassing?
+# choose one, if more - raise ?
