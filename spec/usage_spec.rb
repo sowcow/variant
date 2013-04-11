@@ -65,7 +65,7 @@ describe Variant do
 
       class Wrap < Variant
         accept Range
-        returns { Wrap.new self }
+        returns { |x| new x }
       end      
 
       class Other < Variant

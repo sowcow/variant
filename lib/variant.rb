@@ -26,7 +26,8 @@ module Variant
     end
 
     def self.return! object
-      @returns ? object.instance_eval(&@returns) : self
+      # @returns ? object.instance_eval(&@returns) : self
+      @returns ? @returns.call(object) : self
     end
 
     def self.abstract!
