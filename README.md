@@ -1,6 +1,6 @@
 # Variant
 
-it can be useful if you think that case/when smells or is'nt powerful enough
+it can be useful if you think that case/when smells or isn't powerful enough
 
 example from specs:
 ```ruby
